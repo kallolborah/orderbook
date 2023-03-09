@@ -4,7 +4,7 @@ pragma solidity 0.6.0;
 import "@openzeppelin/contracts-ethereum-package/contracts/utils/Arrays.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol";
 
-contract Array {
+contract SortedArray {
 
     using SafeMath for uint256;
 

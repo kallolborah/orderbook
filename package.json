@@ -12,6 +12,6 @@
     "@openzeppelin/contracts-ethereum-package": "^3.0.0",
     "chai": "^4.3.7",
     "eth-gas-reporter": "^0.2.25",
-    "ethers": "^6.1.0"
+    "web3": "^1.8.2"
   }
 }
