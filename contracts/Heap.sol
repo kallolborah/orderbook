@@ -18,21 +18,20 @@ contract Heap {
         uint256 currentIndex = SafeMath.sub(_orderbook.length, 1);
 
         // Bubble up the value until it reaches it's correct place (i.e. it is smaller than it's parent)
-        // parentIndex = Math.div[Math.sub(currentIndex, 1), 2, false]
+        uint256 parentIndex = SafeMath.div(currentIndex-1, 2);
         while (
             currentIndex > 0 &&
-            _orderbook[SafeMath.div(SafeMath.sub(currentIndex, 0), 2)] <
+            _orderbook[parentIndex] <
             _orderbook[currentIndex]
         ) {
             // If the parent value is lower than our current value, we swap them
-            uint256 temp = _orderbook[SafeMath.div(currentIndex, 2)];
-            _orderbook[SafeMath.div(currentIndex, 2)] = _orderbook[
-                currentIndex
-            ];
+            uint256 temp = _orderbook[parentIndex];
+            _orderbook[parentIndex] = _orderbook[currentIndex];
             _orderbook[currentIndex] = temp;
 
             // change our current Index to go up to the parent
-            currentIndex = SafeMath.div(currentIndex, 2);
+            currentIndex = parentIndex;
+            parentIndex = SafeMath.div(currentIndex-1, 2);
         }
     }
 
@@ -41,6 +40,7 @@ contract Heap {
     function removeMax() public returns (uint256) {
         // Ensure the heap exists
         require(_orderbook.length > 0, "Orderbook is not initialized");
+
         // take the root value of the heap
         uint256 toReturn = _orderbook[0];
 
@@ -62,8 +62,25 @@ contract Heap {
 
     // This function is to be used when we need to find the min sell price for a new buy order 
     function removeMin() public returns(uint256){
-        uint256 toReturn = _orderbook[SafeMath.sub(_orderbook.length, 1)];
+        require(_orderbook.length > 0, "Orderbook is empty");
+
+        uint256 toReturn = _orderbook[_orderbook.length - 1];
+
+        if (_orderbook.length == 1) {
+            _orderbook.pop();
+            return toReturn;
+        }
+
+        _orderbook[0] = _orderbook[_orderbook.length - 1];
+
         _orderbook.pop();
+
+        // Start at the top
+        uint256 currentIndex = 0;
+
+        // Bubble down
+        bubbleDown(currentIndex);
+
         return toReturn;
     }
 
@@ -88,9 +105,9 @@ contract Heap {
             }
 
             // else swap the value
-            uint256 temporayOrder = _orderbook[currentIndex];
+            uint256 temporaryOrder = _orderbook[currentIndex];
             _orderbook[currentIndex] = _orderbook[j];
-            _orderbook[j] = temporayOrder;
+            _orderbook[j] = temporaryOrder;
 
             // and let's keep going down the heap
             currentIndex = j;
@@ -106,6 +123,6 @@ contract Heap {
     }
 
     function getMin() public view returns (uint256) {
-        return _orderbook[SafeMath.sub(_orderbook.length, 1)];
+        return _orderbook[_orderbook.length - 1];
     }
 }

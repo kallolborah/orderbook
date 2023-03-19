@@ -35,7 +35,7 @@ contract SortedArray {
 
     // This function is to be used when we need to find the max buy price for a new sell order 
     function removeMax() public returns (uint256) {
-        
+        require(_orderbook.length > 0, "Orderbook is empty");
         uint256 maxValue = _orderbook[SafeMath.sub(_orderbook.length, 1)];
         _orderbook.pop();
         return maxValue;
@@ -43,7 +43,7 @@ contract SortedArray {
 
     // This function is to be used when we need to find the min sell price for a new buy order 
     function removeMin() public returns(uint256){
-
+        require(_orderbook.length > 0, "Orderbook is empty");
         uint256 minValue = _orderbook[0];
         for(uint256 i=0; i<_orderbook.length-1; i++){
             _orderbook[i] = _orderbook[SafeMath.add(i, 1)];

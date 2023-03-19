@@ -8,8 +8,8 @@ const Heap = artifacts.require('Heap');
 contract("Heap", async (accounts) => {
 
     var heap;
-
-    beforeEach("should add random elements", async () => {     
+    
+    it("should add random elements", async () => {     
         heap = await Heap.deployed(); 
         const testData = Array(10) // checking for 10 elements
         .fill()
@@ -23,26 +23,22 @@ contract("Heap", async (accounts) => {
         }
     });
 
+    it("should display heap", async()=>{
+        await heap.getOrderbook()
+        .then(async(result)=>{
+            console.log("Heap fetched is "+result);
+        })
+    })
+
     it("should remove max from heap", async () => {
-        await heap.getMax()
+        await heap.removeMax()
         .then(async(result)=>{
-            console.log("Max value from heap is "+result);
-            await heap.removeMax()
-            .then(function(){
-                console.log("Removed max heap element");
-            });
-        });
-    });
-
-    it("should remove min from heap", async () => {
-        await heap.getMin()
-        .then(async(result)=>{
-            console.log("Min value from heap is "+result);
+            console.log("Removed max heap element "+result);
             await heap.removeMin()
-            .then(function(){
-                console.log("Removed min heap element");
+            .then(function(result){
+                console.log("Removed min heap element "+result);
             });
         });
     });
-
+    
 });

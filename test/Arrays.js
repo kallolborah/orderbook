@@ -9,7 +9,7 @@ contract("Array", async (accounts) => {
 
     var array;
 
-    beforeEach("should add random elements", async () => {    
+    it("should add random elements", async () => {    
         array = await SortedArray.deployed(); 
         const testData = Array(10) // checking for 10 elements
         .fill()
@@ -23,24 +23,20 @@ contract("Array", async (accounts) => {
         }
     });
 
-    it("should remove max from array", async () => {
-        await array.getMax()
+    it("should display sorted array", async()=>{
+        await array.getOrderbook()
         .then(async(result)=>{
-            console.log("Max value from array is "+result);
-            await array.removeMax()
-            .then(function(){
-                console.log("Removed max array element");
-            });
-        });
-    });
+            console.log("Array fetched is "+result);
+        })
+    })
 
-    it("should remove min from array", async () => {
-        await array.getMin()
+    it("should remove max and min from array", async () => {
+        await array.removeMax()
         .then(async(result)=>{
-            console.log("Min value from array is "+result);
+            console.log("Removed max element "+result);
             await array.removeMin()
-            .then(function(){
-                console.log("Removed min array element");
+            .then(function(result){
+                console.log("Removed min element "+result);
             });
         });
     });
