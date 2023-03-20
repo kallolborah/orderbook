@@ -8,35 +8,36 @@ const Heap = artifacts.require('Heap');
 contract("Heap", async (accounts) => {
 
     var heap;
-    
-    it("should add random elements", async () => {     
+
+    it("should add random elements into sell orderbook", async () => {     
         heap = await Heap.deployed(); 
-        const testData = Array(10) // checking for 10 elements
+        const testData = Array(50) // checking for 10 elements
         .fill()
         .map(() => Math.floor(50 * Math.random())); // numbers from 0-50 (exclusive)
 
         for (let i = 0; i < testData.length; i++) {
-            await heap.insert(testData[i])
+            await heap.insertSellOrders(testData[i])
             .then(function(){
                 console.log("Added element "+testData[i]);
             });
         }
     });
 
-    it("should display heap", async()=>{
+    it("should remove min from heap", async () => {
         await heap.getOrderbook()
         .then(async(result)=>{
             console.log("Heap fetched is "+result);
-        })
-    })
-
-    it("should remove max from heap", async () => {
-        await heap.removeMax()
-        .then(async(result)=>{
-            console.log("Removed max heap element "+result);
-            await heap.removeMin()
-            .then(function(result){
-                console.log("Removed min heap element "+result);
+            await heap.getTop()
+            .then(async(result)=>{
+                console.log("Min element is "+result);
+                await heap.removeMin()
+                .then(async(result)=>{
+                    console.log("Removed min heap element");
+                    await heap.getOrderbook()
+                    .then(async(result)=>{
+                        console.log("Heap fetched after min removal is "+result);
+                    })
+                });
             });
         });
     });
