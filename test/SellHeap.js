@@ -16,7 +16,7 @@ contract("Heap", async (accounts) => {
         .map(() => Math.floor(50 * Math.random())); // numbers from 0-50 (exclusive)
 
         for (let i = 0; i < testData.length; i++) {
-            await heap.insertSellOrders(testData[i])
+            await heap.insertSellOrder(testData[i])
             .then(function(){
                 console.log("Added element "+testData[i]);
             });
@@ -29,7 +29,7 @@ contract("Heap", async (accounts) => {
             console.log("Heap fetched is "+result);
             await heap.getTop()
             .then(async(result)=>{
-                console.log("Min element is "+result);
+                console.log("min element is "+result);
                 await heap.removeMin()
                 .then(async(result)=>{
                     console.log("Removed min heap element");
